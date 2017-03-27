@@ -1,0 +1,125 @@
+<!-- HIT template: TranscribeAudioVideo-v3.0 --><!-- The following snippet enables the 'responsive' behavior on smaller screens -->
+<meta content="width=device-width,initial-scale=1" name="viewport" />
+<section class="container" id="TranscriptionFromAV"><!-- Instructions -->
+<div class="row">
+<div class="col-xs-12 col-md-12">
+<div class="panel panel-primary"><!-- WARNING: the ids "collapseTrigger" and "instructionBody" are being used to enable expand/collapse feature --><a class="panel-heading" href="javascript:void(0);" id="collapseTrigger"><strong>Audio/Video Transcription Instructions</strong> <span class="collapse-text">(Click to expand)</span> </a>
+<div class="panel-body" id="instructionBody">
+<p>Listen to a short video and transcribe what is said.</p>
+
+<ul>
+	<li><strong>Do not </strong>include &quot;hmm&quot; and &quot;err&quot; in the transcription.</li>
+	<li><strong>Do not </strong>correct for grammar mistakes but transcribe as spoken. Transcribe exactly what you hear, not what you think is right.</li>
+	<li>Use punctuation where appropriate.</li>
+	<!--<li>Indicate different speakers with &quot;speaker 1&quot; or &quot;speaker 2&quot;.</li> -->
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- End Instructions --><!-- Video transcription layout -->
+
+<div class="row" id="workContent">
+<div class="col-xs-12 col-md-10 col-md-offset-1"><!-- Link to the video file -->
+<div class="well well-sm"><a href="${media-link}" target="_blank">Link to the audio/video</a></div>
+<!-- Worker input -->
+
+<div class="form-group"><label for="TranscriptionTexts">Please write the transcription here:</label><textarea class="form-control" cols="250" id="TranscriptionTexts" name="TranscriptionTexts" required="" rows="6"></textarea></div>
+</div>
+</div>
+<!-- End Video transcription layout --></section>
+<!-- Please note that Bootstrap CSS/JS and JQuery are 3rd party libraries that may update their url/code at any time. Amazon Mechanical Turk (MTurk) is including these libraries as a default option for you, but is not responsible for any changes to the external libraries --><!-- External CSS references -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" integrity="sha384-IS73LIqjtYesmURkDE9MXKbXqYA8rvKEp/ghicjem7Vc3mGRdQRptJSz60tvrB6+" rel="stylesheet" /><!-- Open internal style sheet -->
+<style type="text/css">#collapseTrigger{
+  color:#fff;
+  display: block;
+  text-decoration: none;
+}
+#submitButton{
+  white-space: normal;
+}
+.image{
+  margin-bottom: 15px; 
+}
+textarea.form-control{
+  height: 100px; /* Fix for textarea overlapping submit button */
+}
+/* CSS for breaking long words/urls */
+.dont-break-out {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+</style>
+<!-- End internal style sheet --><!-- External JS references --><script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" integrity="sha384-s1ITto93iSMDxlp/79qhWHi+LsIi9Gx6yL+cOKDuymvihkfol83TYbLbOw+W/wv4" crossorigin="anonymous"></script><!-- Open internal javascript --><script>
+  
+  //Checks whether the Turk has already accessed this audio recording from the browser
+  function getCookie(audio_id) {
+    var audio = audio_id + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(audio.length, c.length);
+        }
+    }
+    return "";
+  };
+
+
+  //If first time accessing, sets cookie value according to audio_id.
+  function setCookie(audio_id,audio_value, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = audio_id + "=" + audio_value + ";" + expires + ";path=/";
+  };
+
+
+  //Automatically executing function which checks cookie values and sets to audio_value if not set before
+  (function () {
+    var audio_id = getCookie("audio_id");
+    audio_value = 1; //Given value depending on which audio recording is being listened to.
+    if (audio_id != "") {
+        alert("You have already listened to this audio file. Try some other one"); 
+
+        //A request will be made to the server to modify the custom QualificationID of the user so that the user is rejected from the HIT.
+        
+        //stop(); //This is used to stop loading and not allow the use
+    } else {
+        
+          setCookie("audio_id", audio_value, 7);
+    }
+    })();
+
+
+
+
+  $(document).ready(function() {
+    // Instructions expand/collapse
+    var content = $('#instructionBody');
+    var trigger = $('#collapseTrigger');
+    content.hide();
+    $('.collapse-text').text('(Click to expand)');
+    trigger.click(function(){
+      content.toggle();
+      var isVisible = content.is(':visible');
+      if(isVisible){
+        $('.collapse-text').text('(Click to collapse)');
+      }else{
+        $('.collapse-text').text('(Click to expand)');
+      }
+    });
+    // end expand/collapse
+  });
+</script><!-- Close internal javascript -->
